@@ -10,4 +10,5 @@ python-multipart
 requests
 langchain_community
 regex
+bcrypt
 python-jose[cryptography]
