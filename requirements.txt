@@ -1,0 +1,10 @@
+fastapi
+uvicorn[standard]
+pydantic-settings
+python-dotenv
+jinja2
+xhtml2pdf
+openpyxl
+langchain-google-genai
+python-multipart
+requests
