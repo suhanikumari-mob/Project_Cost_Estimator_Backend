@@ -9,3 +9,4 @@ langchain-google-genai
 python-multipart
 requests
 langchain_community
+regex
