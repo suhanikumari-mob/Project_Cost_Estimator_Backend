@@ -12,3 +12,5 @@ langchain_community
 regex
 bcrypt
 python-jose[cryptography]
+langchain
+docx2txt
