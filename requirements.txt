@@ -10,4 +10,4 @@ python-multipart
 requests
 langchain_community
 regex
-jose
+python-jose[cryptography]
