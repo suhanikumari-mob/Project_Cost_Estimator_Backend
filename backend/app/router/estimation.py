@@ -30,13 +30,13 @@ router = APIRouter(tags=["Estimation"])
 
 
 @router.post("/register/")
-def register(Name: str, Email: str, Password: str):
-    return {"Message": register_user(Name, Email, Password)}
+async def register(Name: str, Email: str, Password: str):
+    return {"Message": await register_user(Name, Email, Password)}
 
 
 @router.post("/login")
-def login(Email: str, Password: str):
-    r = check_emailpass(Email, Password)
+async def login(Email: str, Password: str):
+    r = await check_emailpass(Email, Password)
     if not r["success"]:
         raise HTTPException(status_code=401, detail="Invalid email or password")
 
@@ -73,10 +73,10 @@ async def download_zip(query: str = Form(""), requirement: UploadFile = File(...
         raise HTTPException(status_code=500, detail=f"LLM response is not valid JSON: {str(e)}")
 
     project_name = response_dict.get("title", "Untitled Project")
-    thread_id    = get_next_threadid(userid)
+    thread_id    = await get_next_threadid(userid)
 
     # save response_json so history re-download works without re-running LLM
-    save_project(userid, email, thread_id, project_name, response)
+    await save_project(userid, email, thread_id, project_name, response)
 
     pdf_path   = generator_pdf(response)
     excel_path = generate_xls(response, "cost_estimation_report.xlsx")
@@ -92,7 +92,7 @@ async def download_zip(query: str = Form(""), requirement: UploadFile = File(...
 @router.post("/estimate/regenerate/{thread_id}")
 async def regenerate_estimate(thread_id: int, p=Depends(get_current_user)):
     userid   = p["userid"]
-    response = get_project_response(userid, thread_id)  # fetch saved JSON — no LLM call
+    response = await get_project_response(userid, thread_id)  # fetch saved JSON — no LLM call
 
     if not response:
         raise HTTPException(status_code=404, detail="Project not found")
@@ -109,9 +109,9 @@ async def regenerate_estimate(thread_id: int, p=Depends(get_current_user)):
 
 
 @router.get("/projects")
-def get_projects(p=Depends(get_current_user)):
+async def get_projects(p=Depends(get_current_user)):
     userid = p["userid"]
-    return get_threadids(userid)
+    return await get_threadids(userid)
 
 
 @router.post("/estimate/questions")
