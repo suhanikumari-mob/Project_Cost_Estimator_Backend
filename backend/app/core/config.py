@@ -6,7 +6,9 @@ class Settings(BaseSettings):
     MODEL_NAME: str = "gemini-flash-lite-latest"
     TEMPERATURE: float = 0.2
     MAX_OUTPUT_TOKENS: int = 8192
-
+    DB_NAME: str
+    DB_PATH: str
+    
     model_config = SettingsConfigDict(
         env_file=".env",
         extra="ignore"
